@@ -1,0 +1,83 @@
+﻿﻿@using Library.WebUI.Services.JwtServices
+@inject IHttpContextAccessor _contextAccessor
+
+@model List<BookDto>
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var token = _contextAccessor.HttpContext.Session.GetString("token");
+    string username = "";
+
+    if (!string.IsNullOrEmpty(token))
+    {
+        username = JwtHelper.GetClaimValue(token, "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+    }
+}
+
+@if (TempData["ReturnBookSuccess"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["ReturnBookSuccess"]
+    </div>
+}
+
+<h1 class="title">Kitaplarım</h1>
+
+<table class="table table-hover align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Kitap Adı</th>
+            <th>Yazar</th>
+            <th>ISBN</th>
+            <th>Kitap Durumu</th>
+            <th class="text-center">İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Author</td>
+                <td>@item.ISBN</td>
+                <td>
+                    @if (!item.IsAvailable)
+                    {
+                        <span class="badge bg-success rounded-pill">
+                            <i class="bi bi-check-circle-fill me-1"></i>Kitaba Sahipsiniz
+                        </span>
+                    }
+                </td>
+                <td class="text-center">
+                    <div class="btn-group" role="group">
+
+                        <form asp-controller="Book" asp-action="ReturnBook" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@item.Id" id="rentData-@item.Id" />
+                            <button class="btn btn-outline-primary btn-sm" title="İade Et">
+                                <i class="bi bi-info-circle-fill"></i>İade Et
+                            </button>
+                        </form>
+                        
+                    </div>
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<style>
+    .title {
+        font-size: 32px;
+        color: #2c3e50;
+        margin-top: 30px;
+        text-align: center;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 25px;
+    }
+</style>

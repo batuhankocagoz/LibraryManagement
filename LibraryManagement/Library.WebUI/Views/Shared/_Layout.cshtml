@@ -1,0 +1,129 @@
+﻿﻿@using System.Security.Claims
+@using Library.WebUI.Services.JwtServices
+@using Library.WebUI.Services.RoleServices
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var token = HttpContextAccessor.HttpContext.Session.GetString("token");
+    var roles = new List<string>();
+    string username = "";
+
+    if (!string.IsNullOrEmpty(token))
+    {
+        username = JwtHelper.GetClaimValue(token, "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+        roles = GetUserRoles.GetRolesFromToken(token);
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Library.WebUI</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Library.WebUI.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom">
+            <div class="container-fluid">
+                <!-- Logo & Anasayfa -->
+                <a class="navbar-brand fw-bold fs-4 text-primary" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-book-half me-2"></i>Kitapmatik
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                                Anasayfa
+                            </a>
+                        </li>
+
+                        @if (roles.Contains("admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark fw-semibold" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Yönetici
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="GetAllUserList">Kullanıcılar</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Book" asp-action="GetAllBooks">Kitaplar</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else if (roles.Contains("manager"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark fw-semibold" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Yönetici
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Book" asp-action="GetAllBooks">Kitaplar</a></li>
+                                </ul>
+                            </li>
+                        }
+                        
+                    </ul>
+
+
+                    <!-- Kullanıcı Durumu -->
+                    <ul class="navbar-nav">
+                        @if (!string.IsNullOrEmpty(username))
+                        {
+                            <li class="nav-item d-flex align-items-center me-3">
+                                <a class="nav-link fw-semibold text-dark d-flex align-items-center gap-2" asp-area="" asp-controller="Account" asp-action="Profile">
+                                    @username
+                                    @foreach (var role in roles)
+                                    {
+                                        <span class="badge bg-secondary text-capitalize">@role</span>
+                                    }
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-sm btn-outline-primary me-2" asp-controller="Account" asp-action="Logout" method="post">Çıkış Yap</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-sm btn-outline-primary me-2" asp-controller="Account" asp-action="Login">Giriş Yap</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-sm btn-primary text-white" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
+                            </li>
+                        }
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container text-center">
+            &copy; 2025 - Kitapmatik
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+

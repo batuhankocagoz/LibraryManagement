@@ -1,0 +1,68 @@
+﻿@model List<BookRentalHistoryDto?>
+
+@{
+    ViewData["Title"] = "GetBookRentalHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="rental-history-container">
+    <h1 class="title">
+        <i class="bi bi-journal-bookmark-fill me-2 text-primary"></i>@ViewBag.BookTitle Kiralama Geçmişi
+    </h1>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle-fill me-1"></i>@ViewBag.NoHistoryMessage
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Kiralayan Kişi</th>
+                    <th>Kiralama Tarihi</th>
+                    <th>İade Tarihi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rental in Model)
+                {
+                    <tr>
+                        <td>@rental.RentedBy</td>
+                        <td>@rental.RentDate.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            @if (rental.ReturnDate.HasValue)
+                            {
+                                <span class="badge bg-success rounded-pill">
+                                    <i class="bi bi-calendar-check-fill me-1"></i>
+                                    @rental.ReturnDate.Value.ToString("dd.MM.yyyy")
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark rounded-pill">
+                                    <i class="bi bi-hourglass-split me-1"></i>
+                                    Henüz iade edilmedi
+                                </span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<style>
+    .title {
+        font-size: 32px;
+        color: #2c3e50;
+        margin-top: 30px;
+        text-align: center;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 25px;
+    }
+</style>

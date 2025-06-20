@@ -1,0 +1,39 @@
+﻿@model BookDto
+@{
+    ViewData["Title"] = "UpdateBook";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="title">Kitap Güncelle</h1>
+
+<div class="d-flex justify-content-center">
+    <form asp-controller="Book" asp-action="UpdateBook" method="post" style="width: 100%; max-width: 400px;">
+        <div class="form-group mb-3">
+            <label for="Title" class="form-label">Kitap Adı</label>
+            <input type="text" class="form-control" id="Title" name="Title" value="@Model.Title" required />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Author" class="form-label">Yazar</label>
+            <input type="text" class="form-control" id="Author" name="Author" value="@Model.Author" required />
+        </div>
+        <div class="form-group mb-3">
+            <label for="ISBN" class="form-label">ISBN</label>
+            <input type="text" maxlength="13" minlength="13" class="form-control" id="ISBN" required pattern="\d{13}" name="ISBN" value="@Model.ISBN" required />
+        </div>
+        <input type="hidden" name="bookId" value="@Model.Id" />
+        <button type="submit" class="btn btn-primary w-100">Güncelle</button>
+    </form>
+</div>
+
+<style>
+    .title {
+        font-size: 32px;
+        color: #2c3e50;
+        margin-top: 30px;
+        text-align: center;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 25px;
+    }
+</style>

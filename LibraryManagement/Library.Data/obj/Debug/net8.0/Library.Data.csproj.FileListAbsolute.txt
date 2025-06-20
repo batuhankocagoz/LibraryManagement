@@ -1,0 +1,17 @@
+C:\repos\LibraryManagement\Library.Data\bin\Debug\net8.0\Library.Data.deps.json
+C:\repos\LibraryManagement\Library.Data\bin\Debug\net8.0\Library.Data.runtimeconfig.json
+C:\repos\LibraryManagement\Library.Data\bin\Debug\net8.0\Library.Data.dll
+C:\repos\LibraryManagement\Library.Data\bin\Debug\net8.0\Library.Data.pdb
+C:\repos\LibraryManagement\Library.Data\bin\Debug\net8.0\Library.Core.dll
+C:\repos\LibraryManagement\Library.Data\bin\Debug\net8.0\Library.Core.pdb
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\Library.Data.csproj.AssemblyReference.cache
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\Library.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\Library.Data.AssemblyInfoInputs.cache
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\Library.Data.AssemblyInfo.cs
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\Library.Data.csproj.CoreCompileInputs.cache
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\Library..D93EEA8C.Up2Date
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\Library.Data.dll
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\refint\Library.Data.dll
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\Library.Data.pdb
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\Library.Data.genruntimeconfig.cache
+C:\repos\LibraryManagement\Library.Data\obj\Debug\net8.0\ref\Library.Data.dll

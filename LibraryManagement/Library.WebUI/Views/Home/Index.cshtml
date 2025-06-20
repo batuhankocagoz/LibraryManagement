@@ -1,0 +1,187 @@
+﻿@model List<BookDto>
+@{
+    ViewData["Title"] = "Kitap Listesi";
+}
+
+<style>
+    .library-title {
+        font-size: 32px;
+        color: #2c3e50;
+        margin-top: 30px;
+        text-align: center;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 25px;
+    }
+
+    .library-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 60px;
+        padding: 20px;
+        max-width: 1500px;
+        margin: auto;
+    }
+
+    .book-card {
+        background-color: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 105%;
+    }
+
+    .book-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .book-image-container {
+        height: 220px;
+        overflow: hidden;
+        position: relative;
+        background-color: #f5f5f5;
+    }
+
+    .book-image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1); 
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 87%;
+        transition: transform 0.4s ease;
+    }
+
+    .book-card:hover .book-image {
+        transform: translate(-50%, -50%) scale(1.1); 
+    }
+
+    .book-content {
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex-grow: 1;
+    }
+
+    .book-title {
+        font-size: 1.2rem;
+        color: #2c3e50;
+        margin: 0;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .book-info {
+        font-size: 0.95rem;
+        color: #555;
+    }
+
+    .book-status {
+        font-size: 0.95rem;
+    }
+
+    .status-badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-left: 5px;
+    }
+
+    .available {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+
+    .unavailable {
+        background-color: #fee2e2;
+        color: #991b1b;
+    }
+
+    .rent-form {
+        margin-top: auto;
+    }
+
+    .rent-button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background-color: #2563eb;
+        color: white;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .rent-button:hover:not([disabled]) {
+        background-color: #1d4ed8;
+    }
+
+    .rent-button:disabled {
+        background-color: #9ca3af;
+        cursor: not-allowed;
+    }
+
+</style>
+
+<div class="library-container">
+    @if (TempData["RentBookError"] != null)
+    {
+        <div class="alert-custom alert-danger-custom" role="alert">
+            <i class="fas fa-exclamation-circle mr-2"></i> @TempData["RentBookError"]
+        </div>
+    }
+
+    @if (TempData["RentBookSuccess"] != null)
+    {
+        <div class="alert-custom alert-success-custom" role="alert">
+            <i class="fas fa-check-circle mr-2"></i> @TempData["RentBookSuccess"]
+        </div>
+    }
+
+    <h1 class="library-title">Kitap Listesi</h1>
+
+    <div class="library-grid">
+        @foreach (var item in Model)
+        {
+            <div class="book-item">
+                <div class="book-card">
+                    <div class="book-image-container">
+                        <img src="https://img.freepik.com/free-photo/education-concept-with-book_23-2149001214.jpg" class="book-image" />
+                    </div>
+                    <div class="book-content">
+                        <h2 class="book-title">@item.Title</h2>
+                        <div class="book-info"><strong>Yazar:</strong> @item.Author</div>
+                        <div class="book-info"><strong>ISBN:</strong> @item.ISBN</div>
+                        <div class="book-status">
+                            <strong>Durum:</strong>
+                            @if (item.IsAvailable)
+                            {
+                                <span class="status-badge available">Mevcut</span>
+                            }
+                            else
+                            {
+                                <span class="status-badge unavailable">Mevcut Değil</span>
+                            }
+                        </div>
+                        <form asp-controller="Book" asp-action="RentBook" method="post" class="rent-form">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="rent-button" @(item.IsAvailable ? "" : "disabled")>
+                                @(item.IsAvailable ? "Kirala" : "Kiralamaya Uygun Değil")
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

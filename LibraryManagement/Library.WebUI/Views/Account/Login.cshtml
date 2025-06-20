@@ -1,0 +1,55 @@
+﻿@using Library.WebUI.Dtos.UserDto
+@model LoginDto
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["RegisterSuccess"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["RegisterSuccess"]
+    </div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var modelState in ViewData.ModelState.Values)
+        {
+            foreach (var error in modelState.Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        }
+    </div>
+}
+
+<h1 class="title">Giriş Yap</h1>
+
+<div class="d-flex justify-content-center">
+    <form asp-controller="Account" asp-action="Login" method="post" style="width: 100%; max-width: 400px;">
+        <div class="form-group mb-3">
+            <label asp-for="Email">E-posta Adresi</label>
+            <input type="email" class="form-control" asp-for="Email" placeholder="E-posta adresinizi girin">
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Password">Şifre</label>
+            <input type="password" class="form-control" asp-for="Password" placeholder="Şifrenizi girin">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
+    </form>
+</div>
+
+<style>
+    .title {
+        font-size: 32px;
+        color: #2c3e50;
+        margin-top: 30px;
+        text-align: center;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 25px;
+   }
+</style>
+
+
